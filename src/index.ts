@@ -12,10 +12,13 @@ export const run = (pattern: string[], options: RunOptions = { cwd: process.cwd(
   const isMatch = pm(pattern, {
     ignore: options.ignore || []
   });
-  return globDirectory(entryDir, isMatch, options);
+  const ignoreMatch = pm('**', {
+    ignore: options.ignore || []
+  })
+  return globDirectory(entryDir, isMatch, ignoreMatch, options);
 }
 
-const globDirectory = (dirname: string, isMatch, options?) => {
+const globDirectory = (dirname: string, isMatch, ignoreDirMatch, options?) => {
   if (!existsSync(dirname)) {
     return [];
   }
@@ -25,8 +28,8 @@ const globDirectory = (dirname: string, isMatch, options?) => {
   for( let file of list) {
     const resolvePath = resolve(dirname, file);
     const fileStat = statSync(resolvePath);
-    if (fileStat.isDirectory() && isMatch(resolvePath)) {
-      const childs = globDirectory(resolvePath, isMatch, options);
+    if (fileStat.isDirectory() && ignoreDirMatch(resolvePath)) {
+      const childs = globDirectory(resolvePath, isMatch, ignoreDirMatch, options);
       result.push(...childs);
     } else if(fileStat.isFile() && isMatch(resolvePath)) {
       result.push(resolvePath);

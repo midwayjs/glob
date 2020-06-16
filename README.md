@@ -7,10 +7,11 @@
 ```ts
 import { run } from '@midwayjs/glob';
 
-const result = run(['**/*.md', '!**/bbbb/**'], {
+const result = run(['**/*.md'], {
   cwd: join(__dirname, './fixtures/first'),
   ignore: [
-    '**/c.md'
+    '**/c.md',
+    '**/bbbb/**'
   ]
 });
 console.log(result); // Output: [ '/Users/harry/project/glob/test/fixtures/first/a.md' ]
