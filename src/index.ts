@@ -6,9 +6,16 @@ import * as pm from 'picomatch';
 const readdir = promisify(fs.readdir);
 const stat = promisify(fs.stat);
 
-export const run = async (pattern: string| string[], options: {cwd: string} = {cwd: process.cwd()}) => {
+export interface RunOptions {
+  cwd: string;
+  ignore?: string[];
+}
+
+export const run = async (pattern: string[], options: RunOptions = { cwd: process.cwd(), ignore: [] }) => {
   const entryDir = options.cwd;
-  const isMatch = pm(pattern);
+  const isMatch = pm(pattern, {
+    ignore: options.ignore || []
+  });
   return globDirectory(entryDir, isMatch, options);
 }
 

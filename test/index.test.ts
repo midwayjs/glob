@@ -5,7 +5,10 @@ import * as assert from 'assert';
 describe('test', () => {
   it('test run', async () => {
     const result = await run(['**/*.md', '!**/bbbb/**'], {
-      cwd: join(__dirname, './fixtures/first')
+      cwd: join(__dirname, './fixtures/first'),
+      ignore: [
+        '**/c.md'
+      ]
     });
     assert.deepEqual(result, [ join(process.cwd(), 'test/fixtures/first/a.md') ]);
   });

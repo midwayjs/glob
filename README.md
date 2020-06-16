@@ -8,7 +8,10 @@
 import { run } from '@midwayjs/glob';
 
 const result = await run(['**/*.md', '!**/bbbb/**'], {
-  cwd: join(__dirname, './fixtures/first')
+  cwd: join(__dirname, './fixtures/first'),
+  ignore: [
+    '**/c.md'
+  ]
 });
 console.log(result); // Output: [ '/Users/harry/project/glob/test/fixtures/first/a.md' ]
 
