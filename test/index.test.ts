@@ -7,6 +7,6 @@ describe('test', () => {
     const result = await run(['**/*.md', '!**/bbbb/**'], {
       cwd: join(__dirname, './fixtures/first')
     });
-    assert.deepEqual(result, [ '/Users/harry/project/glob/test/fixtures/first/a.md' ]);
+    assert.deepEqual(result, [ join(process.cwd(), 'test/fixtures/first/a.md') ]);
   });
 });
