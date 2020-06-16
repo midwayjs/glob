@@ -25,11 +25,8 @@ const globDirectory = async (dirname: string, isMatch, options?) => {
     if (fileStat.isDirectory() && isMatch(resolvePath)) {
       const childs = await globDirectory(resolvePath, isMatch, options);
       result.push(...childs);
-    } else {
-      // 过滤
-      if (isMatch(resolvePath)) {
-        result.push(resolvePath);
-      }
+    } else if(fileStat.isFile() && isMatch(resolvePath)) {
+      result.push(resolvePath);
     }
   }
 
