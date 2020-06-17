@@ -3,7 +3,7 @@ import { join } from 'path';
 import * as assert from 'assert';
 
 describe('test', () => {
-  it.only('test run', async () => {
+  it('test run', async () => {
     const result = await run(['**/*.md'], {
       cwd: join(__dirname, './fixtures/first'),
       ignore: [
