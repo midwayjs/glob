@@ -1,6 +1,7 @@
 import { run } from '../src/index';
 import { join } from 'path';
 import * as assert from 'assert';
+import * as pm from 'picomatch';
 
 describe('test', () => {
   it('test run', async () => {
@@ -19,7 +20,6 @@ describe('test', () => {
       cwd: join(__dirname, './fixtures/second/src'),
       ignore: [
         '**/**.d.ts',
-        '**/node_modules/**',
         '**/logs/**',
         '**/run/**',
         '**/public/**',
@@ -38,4 +38,32 @@ describe('test', () => {
       join(process.cwd(),'./test/fixtures/second/src/lib/service.ts'),
     ]);
   });
+
+  it('test run with dot directory', async () => {
+    const result = await run(['**/*.md'], {
+      cwd: join(__dirname, './fixtures/.ccc'),
+      ignore: [
+      ]
+    });
+    assert.deepEqual(result, [ join(process.cwd(), 'test/fixtures/.ccc/dd.md') ]);
+  });
+
+
+  it('test dot path match', () => {
+    const isMatch = pm(['**/**.ts', '**/**.tsx', '**/**.js'], {
+      dot: true,
+      ignore: [
+        '**/**.d.ts',
+        '**/logs/**',
+        '**/run/**',
+        '**/public/**',
+        '**/view/**',
+        '**/views/**',
+        '**/plugin2/**'
+      ]
+    });
+
+    const result = isMatch('/root/.pipcook/server/node_modules/@pipcook/daemon/dist/a.js');
+    assert(result === true);
+  })
 });

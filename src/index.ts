@@ -34,10 +34,10 @@ const globDirectory = (dirname: string, isMatch, ignoreDirMatch, options?) => {
   for( let file of list) {
     const resolvePath = resolve(dirname, file);
     const fileStat = statSync(resolvePath);
-    if (fileStat.isDirectory() && ignoreDirMatch(resolvePath)) {
+    if (fileStat.isDirectory() && ignoreDirMatch(resolvePath.replace(dirname, ''))) {
       const childs = globDirectory(resolvePath, isMatch, ignoreDirMatch, options);
       result.push(...childs);
-    } else if(fileStat.isFile() && isMatch(resolvePath)) {
+    } else if(fileStat.isFile() && isMatch(resolvePath.replace(dirname, ''))) {
       result.push(resolvePath);
     }
   }
