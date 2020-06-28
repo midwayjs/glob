@@ -3,6 +3,11 @@
   "version": "1.0.4",
   "main": "dist/index",
   "typings": "dist/index.d.ts",
+  "homepage": "https://github.com/midwayjs/glob",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/midwayjs/glob.git"
+  },
   "dependencies": {
     "picomatch": "^2.2.2"
   },
