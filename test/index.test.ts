@@ -25,16 +25,15 @@ describe('test', () => {
         '**/public/**',
         '**/view/**',
         '**/views/**',
-        '**/plugin2/**'
+        '**/plugin2/**',
+        '**/app/extend/**',
+        '**/config/**',
       ]
     });
     assert.deepEqual(result, [
       join(process.cwd(),'./test/fixtures/second/src/a.ts'),
       join(process.cwd(),'./test/fixtures/second/src/app/controller/api.ts'),
       join(process.cwd(),'./test/fixtures/second/src/app/router.ts'),
-      join(process.cwd(),'./test/fixtures/second/src/config/config.default.ts'),
-      join(process.cwd(),'./test/fixtures/second/src/config/config.unittest.ts'),
-      join(process.cwd(),'./test/fixtures/second/src/config/plugin.ts'),
       join(process.cwd(),'./test/fixtures/second/src/lib/service.ts'),
     ]);
   });
@@ -59,11 +58,12 @@ describe('test', () => {
         '**/public/**',
         '**/view/**',
         '**/views/**',
+        '**/app/extend/**',
         '**/plugin2/**'
       ]
     });
 
-    const result = isMatch('/root/.pipcook/server/node_modules/@pipcook/daemon/dist/a.js');
-    assert(result === true);
+    assert(isMatch('/root/.pipcook/server/node_modules/@pipcook/daemon/dist/a.js') === true);
+    assert(isMatch('/home/admin/workspace/gitlab.alibaba-inc.com/sitemeta/sitemeta-node/src/app/extend/context.ts') === false);
   })
 });
