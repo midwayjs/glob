@@ -64,6 +64,6 @@ describe('test', () => {
     });
 
     assert(isMatch('/root/.pipcook/server/node_modules/@pipcook/daemon/dist/a.js') === true);
-    assert(isMatch('/home/admin/workspace/gitlab.alibaba-inc.com/sitemeta/sitemeta-node/src/app/extend/context.ts') === false);
+    assert(isMatch('/home/ccc/sitenode/src/app/extend/context.ts') === false);
   })
 });
