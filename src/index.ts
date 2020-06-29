@@ -19,28 +19,30 @@ export const run = (pattern: string[], options: RunOptions = { cwd: process.cwd(
   const ignoreMatch = pm('**', {
     ignore: options.ignore || []
   })
+
+  function globDirectory(dirname: string, isMatch, ignoreDirMatch, options?) {
+    if (!existsSync(dirname)) {
+      return [];
+    }
+    const list = readdirSync(dirname);
+    const result = [];
+
+    for( let file of list) {
+      const resolvePath = resolve(dirname, file);
+      log(`resolvePath = ${resolvePath}`);
+      const fileStat = statSync(resolvePath);
+      if (fileStat.isDirectory() && ignoreDirMatch(resolvePath.replace(entryDir, ''))) {
+        const childs = globDirectory(resolvePath, isMatch, ignoreDirMatch, options);
+        result.push(...childs);
+      } else if(fileStat.isFile() && isMatch(resolvePath.replace(entryDir, ''))) {
+        result.push(resolvePath);
+      }
+    }
+
+    return result;
+  }
+
   const result = globDirectory(entryDir, isMatch, ignoreMatch, options);
   log(`midway glob timing ${Date.now() - startTime}ms`);
   return result;
 }
-
-const globDirectory = (dirname: string, isMatch, ignoreDirMatch, options?) => {
-  if (!existsSync(dirname)) {
-    return [];
-  }
-  const list = readdirSync(dirname);
-  const result = [];
-
-  for( let file of list) {
-    const resolvePath = resolve(dirname, file);
-    const fileStat = statSync(resolvePath);
-    if (fileStat.isDirectory() && ignoreDirMatch(resolvePath.replace(dirname, ''))) {
-      const childs = globDirectory(resolvePath, isMatch, ignoreDirMatch, options);
-      result.push(...childs);
-    } else if(fileStat.isFile() && isMatch(resolvePath.replace(dirname, ''))) {
-      result.push(resolvePath);
-    }
-  }
-
-  return result;
-};
