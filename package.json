@@ -24,8 +24,8 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "corss-env rm -rf dist && tsc",
-    "test": "corss-env NODE_ENV=test jest",
-    "cov": "corss-env NODE_ENV=unittest jest --coverage"
+    "build": "cross-env rm -rf dist && tsc",
+    "test": "cross-env NODE_ENV=test jest",
+    "cov": "cross-env NODE_ENV=unittest jest --coverage"
   }
 }
