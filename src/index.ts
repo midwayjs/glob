@@ -1,9 +1,15 @@
 import { existsSync, readdirSync, statSync } from 'fs';
-import { resolve } from 'path';
+import { resolve, posix } from 'path';
 import * as pm from 'picomatch';
 import { debuglog } from 'util';
 
 const log = debuglog('midway:glob');
+
+function formatWindowsPath(paths?: string[]) {
+  if (paths) {
+    return paths.map(p => posix.normalize(p));
+  }
+}
 
 export interface RunOptions {
   cwd: string;
@@ -14,10 +20,10 @@ export const run = (pattern: string[], options: RunOptions = { cwd: process.cwd(
   const startTime = Date.now();
   const entryDir = options.cwd;
   const isMatch = pm(pattern, {
-    ignore: options.ignore || []
+    ignore: formatWindowsPath(options.ignore) || []
   });
   const ignoreMatch = pm('**', {
-    ignore: options.ignore || []
+    ignore: formatWindowsPath(options.ignore) || []
   })
 
   function globDirectory(dirname: string, isMatch, ignoreDirMatch, options?) {
