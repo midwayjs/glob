@@ -1,13 +1,14 @@
 import { existsSync, readdirSync, statSync } from 'fs';
-import { resolve, posix } from 'path';
+import { resolve, sep, posix } from 'path';
 import * as pm from 'picomatch';
 import { debuglog } from 'util';
+import * as os from 'os';
 
 const log = debuglog('midway:glob');
 
 function formatWindowsPath(paths?: string[]) {
-  if (paths) {
-    return paths.map(p => posix.normalize(p));
+  if (os.platform() === 'win32' && paths) {
+    return paths.map(p => p.split(sep).join(posix.sep));
   }
 }
 
@@ -19,6 +20,7 @@ export interface RunOptions {
 export const run = (pattern: string[], options: RunOptions = { cwd: process.cwd(), ignore: [] }) => {
   const startTime = Date.now();
   const entryDir = options.cwd;
+  pattern = formatWindowsPath(pattern) || [];
   const isMatch = pm(pattern, {
     ignore: formatWindowsPath(options.ignore) || []
   });
