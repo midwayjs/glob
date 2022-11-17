@@ -10,6 +10,7 @@ function formatWindowsPath(paths?: string[]) {
   if (os.platform() === 'win32' && paths) {
     return paths.map(p => p.split(sep).join(posix.sep));
   }
+  return paths;
 }
 
 export interface RunOptions {
