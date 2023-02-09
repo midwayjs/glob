@@ -19,9 +19,11 @@ export interface RunOptions {
 }
 
 export const run = (pattern: string[], options: RunOptions = { cwd: process.cwd(), ignore: [] }) => {
+  log(`midway glob pattern = ${pattern}, options = ${JSON.stringify(options)}`);
   const startTime = Date.now();
   const entryDir = options.cwd;
   pattern = formatWindowsPath(pattern) || [];
+  log(`after format pattern = ${pattern}`);
   const isMatch = pm(pattern, {
     ignore: formatWindowsPath(options.ignore) || []
   });
